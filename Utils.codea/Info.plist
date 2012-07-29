@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Luca Ferrara</string>
+	<key>Buffer Order</key>
+	<array>
+		<string>Main</string>
+		<string>Dependencies</string>
+		<string>ClassEx</string>
+		<string>Callbacks</string>
+		<string>IO</string>
+		<string>Stats</string>
+		<string>Matrix</string>
+		<string>Shape</string>
+		<string>String</string>
+		<string>StringBuilder</string>
+		<string>CollisionKit</string>
+		<string>Log</string>
+		<string>Table</string>
+		<string>XmlNode</string>
+		<string>Color</string>
+		<string>Math</string>
+		<string>SpatialHashMap</string>
+	</array>
+	<key>Created</key>
+	<string>2012-06-20 06:26:14 +0000</string>
+	<key>Description</key>
+	<string>No description available</string>
+</dict>
+</plist>

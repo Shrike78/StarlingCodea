@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Luca Ferrara</string>
+	<key>Buffer Order</key>
+	<array>
+		<string>License</string>
+		<string>Main</string>
+		<string>ToDo</string>
+		<string>Dependencies</string>
+		<string>Assets</string>
+		<string>Event</string>
+		<string>EventDispatcher</string>
+		<string>StarlingCodea</string>
+		<string>DisplayObj</string>
+		<string>MeshData</string>
+		<string>DisplayObjContainer</string>
+		<string>Stage</string>
+		<string>Quad</string>
+		<string>Image</string>
+		<string>Button</string>
+		<string>Juggler</string>
+		<string>IAnimatable</string>
+		<string>MovieClip</string>
+		<string>Texture</string>
+		<string>SubTexture</string>
+		<string>TextureAtlas</string>
+		<string>BigTextureAtlas</string>
+		<string>TexturePacker</string>
+	</array>
+	<key>Created</key>
+	<string>2012-04-26 05:09:36 +0000</string>
+	<key>Dependencies</key>
+	<array/>
+	<key>Description</key>
+	<string>Texture Packer - Texture Atlas and animation</string>
+</dict>
+</plist>

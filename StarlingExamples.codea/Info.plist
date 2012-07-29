@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Luca Ferrara</string>
+	<key>Buffer Order</key>
+	<array>
+		<string>Main</string>
+		<string>Dependencies</string>
+		<string>CollisionCheckExample</string>
+		<string>StarlingExample</string>
+		<string>PlanetCuteAtlasDescriptor</string>
+		<string>PauseAtlasDescriptor</string>
+	</array>
+	<key>Created</key>
+	<string>2012-07-27 12:02:12 +0000</string>
+	<key>Description</key>
+	<string>No description available</string>
+</dict>
+</plist>
