@@ -8,7 +8,6 @@
 	<array>
 		<string>Main</string>
 		<string>Dependencies</string>
-		<string>CollisionCheckExample</string>
 		<string>StarlingExample</string>
 		<string>PlanetCuteAtlasDescriptor</string>
 		<string>PauseAtlasDescriptor</string>
