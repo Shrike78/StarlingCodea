@@ -1,7 +1,6 @@
 -- Button
 --[[
-A simple button composed of an image and, optionally, text. (to be
-implemented)
+A simple button composed of an image and, optionally, text. 
 
 It's possible to set a texture for up and downstate of the button.
 If a down state is not provided the button is simply scaled a 
@@ -15,7 +14,7 @@ dispatched when the touch.state is ENDED and the button was hitted
 --]]
 Button = class(DisplayObjContainer)
 
-function Button:init(upState, downState)
+function Button:init(upState, label, downState)
     DisplayObjContainer.init(self)
     if not upState then
         error("upState texture cannot be null")
@@ -35,6 +34,13 @@ function Button:init(upState, downState)
     self.contents = DisplayObjContainer()
     self.contents:addChild(self.background)
     self:addChild(self.contents)
+    if label then
+        self.textField = TextField(upState.width,upState.height,label,
+            nil,nil,CENTER)
+        self.textField:setPos(self.textField:getWidth()/2,
+            self.textField:getHeight()/2)
+        self.contents:addChild(self.textField)
+    end
     self:setHittable(true)
     self:addEventListener(Event.TOUCH, Button.onTouch,self)        
 end
@@ -44,6 +50,10 @@ function Button:resetContents()
     self.background:setTexture(self.upState)
     self.contents:setPos(0,0)
     self.contents:setScale(1,1)
+end
+
+function Button:getTextField()
+    return self.textField
 end
 
 function Button:setName(name)

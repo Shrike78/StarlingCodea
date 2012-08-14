@@ -7,7 +7,7 @@ function Color.blend(c1, c2, a)
     return color(c1.r * a + c2.r * (1-a),
                  c1.g * a + c2.g * (1-a),
                  c1.b * a + c2.b * (1-a),
-                 c1.a * a + c2.a * (1-a)
+                 c1.a
                 )
 end
 

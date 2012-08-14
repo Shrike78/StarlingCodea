@@ -3,7 +3,7 @@
 --[[
 StarlingCodea provides a way to work very similar to flash application.
 Once initialized a stage, a juggler and a log are created, and the default draw() and touched() global function are override by local function that manage basic draw functionality and touch management.
-    
+
 Like in flash each object attached to the stage will be drawn and
 each touchable object will be hitTested when a touch occurs.
 
@@ -29,7 +29,13 @@ function StarlingCodea:showStats(x,y,memstats)
     self.stats = Stats(x,y,memstats)
 end
 
+--override this to update data structures
+function StarlingCodea:onPostDraw(func)
+    self._onPostDraw = func
+end
+  
 function StarlingCodea:init()
+    self._onPostDraw = nil
     self.stage = Stage()
     self.stage:setName("StarlingStage")
     
@@ -45,6 +51,9 @@ function StarlingCodea:init()
         self.juggler:advanceTime(DeltaTime)
         __draw()
         self.stage:draw()
+        if self._onPostDraw then 
+            self._onPostDraw()
+        end
         if self.stats then
             self.stats:draw()
         end

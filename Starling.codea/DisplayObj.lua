@@ -336,17 +336,13 @@ function DisplayObj:getScaleY()
     return self._members.scaleY
 end
 
---width and height are scaled depending on the scaleX,Y value set
 function DisplayObj:getWidth()
-    return self:getBounds(self,__helperRect).w * 
-        math.abs(self._members.scaleX)
+    return self:getBounds(self.parent,__helperRect).w  
 end
 
 function DisplayObj:getHeight()
-    return self:getBounds(self,__helperRect).h * 
-        math.abs(self._members.scaleY)
+    return self:getBounds(self.parent,__helperRect).h
 end
-
 
 --[[
     Return a matrix that represents the transformation from the 

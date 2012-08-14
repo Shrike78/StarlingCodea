@@ -64,3 +64,27 @@ function table.invert(t)
     end
     return new
 end
+
+function table.slice(t,i1,i2)
+    local res = {}
+    local n = #t
+    -- default values for range
+    local i1 = i1 or 1
+    local i2 = i2 or n
+    if i2 < 0 then
+        i2 = n + i2 + 1
+    elseif i2 > n then
+        i2 = n
+    end
+    if i1 < 1 or i1 > n then
+        return {}
+    end
+    local k = 1
+    for i = i1,i2 do
+        res[k] = t[i]
+    k = k + 1
+    end
+    return res
+end
+
+    

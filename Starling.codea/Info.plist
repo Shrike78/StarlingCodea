@@ -20,6 +20,7 @@
 		<string>Stage</string>
 		<string>Quad</string>
 		<string>Image</string>
+		<string>TextField</string>
 		<string>Button</string>
 		<string>Juggler</string>
 		<string>IAnimatable</string>

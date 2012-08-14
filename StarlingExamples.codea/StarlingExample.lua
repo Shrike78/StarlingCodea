@@ -225,6 +225,7 @@ function setup()
     --the up state and button_pause_down afor the pressed state
     local buttonPause = Button(
         pauseAtlas:getTexture("button_pause_up"),
+		nil,
         pauseAtlas:getTexture("button_pause_down")
     )
     

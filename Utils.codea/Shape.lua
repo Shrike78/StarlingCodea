@@ -84,6 +84,10 @@ function Rect:copy(r)
     self.h = r.h
 end
 
+function Rect:getCenter()
+    return self.x + self.w/2, self.y + self.h/2
+end
+
 function Rect:containsPoint(x,y)
     if x > self.x and y > self.y then
         if x < (self.x + self.w) and y < (self.y + self.h) then

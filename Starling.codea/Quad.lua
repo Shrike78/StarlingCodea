@@ -137,6 +137,7 @@ function Quad:_updateGeometry()
         if not self._visible then
             self.meshdata.mesh:setRect(self.meshdata.idx,
                 0,0,0,0)
+            return
         end
         
         if self._pivotMode ~= PivotMode.CENTER and self._flags.bRotate 
@@ -156,22 +157,24 @@ function Quad:_updateGeometry()
             mesh:vertex(idx + 6, tm[4],tm[8])
             
         else
-            local w = self._rectMatrix[3] * self._members.scaleX
-            local h = self._rectMatrix[5] * self._members.scaleY
+            local sx = self._members.scaleX
+            local sy = self._members.scaleY
+            local w = self._rectMatrix[3] * sx
+            local h = self._rectMatrix[5] * sy
             
             if self._pivotMode == PivotMode.CENTER then
-            --that's the best case
-            self.meshdata.mesh:setRect(self.meshdata.idx,
-                self._members.x,
-                self._members.y,
-                w,h,
-                self._members.r)
+                self.meshdata.mesh:setRect(self.meshdata.idx,
+                    self._members.x,
+                    self._members.y,
+                    w,h,
+                    self._members.r)
             else
                 --not centered and not rotate
-                --that's a variation of the best case with just a 
-                --displacement for x,y
-                local x = self._members.x - self._members.pivotX + w/2
-                local y = self._members.y - self._members.pivotY + h/2
+                local x = self._members.x - self._members.pivotX * 
+                    sx + w/2
+                local y = self._members.y - self._members.pivotY *
+                    sy + h/2
+                    
                 self.meshdata.mesh:setRect(self.meshdata.idx,
                     x,y,w,h)
             end
@@ -277,14 +280,6 @@ function Quad:setVisible(bVisible)
         DisplayObj.setVisible(self,bVisible)
         self:_updateGeometry()
     end
-end
-
-function Quad:getWidth()
-    return self._rectMatrix[3] * math.abs(self._members.scaleX)
-end
-
-function Quad:getHeight()
-    return self._rectMatrix[5] * math.abs(self._members.scaleY)
 end
 
 local min = math.min

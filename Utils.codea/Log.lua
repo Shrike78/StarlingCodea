@@ -17,6 +17,7 @@ function Log:write(...)
 end
 
 function Log:print(bFlush,outFunc)
+    
     local outFunc = outFunc or print
     outFunc(self:toString(bFlush))
 end

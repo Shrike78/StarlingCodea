@@ -52,6 +52,26 @@ function DisplayObjContainer:init()
     self._numChildren = 0
 end
 
+--this is called to removeno more used meshes. can be slow
+function DisplayObjContainer:optimize()
+    local removeList = {}
+    for _,v in pairs(self._meshes) do
+        local poolSize = self._quadPool[v] and #self._quadPool[v] or 0
+        print(poolSize, #v.vertices)
+        if poolSize == #v.vertices / 6 then
+            table.insert(removeList,v)
+        end
+    end
+    for _,v in pairs(removeList) do
+        for k,o in pairs(self._meshes) do
+            if o == v then
+                self._meshes[k] = nil
+            end
+        end
+        self._quadPool[v] = nil
+    end            
+end
+
 -- Debug Infos and __tostring redefinition
 function DisplayObjContainer:dbgInfo(recursive)
     local sb = StringBuilder()
@@ -60,8 +80,8 @@ function DisplayObjContainer:dbgInfo(recursive)
     sb:writeln("#displayObjs = ",#self._displayObjs)
     local counter = 1
     for i,v in pairs(self._meshes) do
-        local unusedQuads = self._quadPool[i] and 
-            #self._quadPool[i] or 0
+        local unusedQuads = self._quadPool[v] and 
+            #self._quadPool[v] or 0
         local s = string.format("mesh[%d]: %s, %d quads, %d unused",
            counter, tostring(i), #v.vertices/6,unusedQuads)
         counter = counter + 1
@@ -78,6 +98,17 @@ function DisplayObjContainer:dbgInfo(recursive)
     return sb:toString(true)
 end
 
+--returns the first child with a given name, or nil
+function DisplayObjContainer:getChildByName(name)
+    for _,list in pairs(self._displayLists) do
+        for _,o in pairs(list) do
+            if o._name == name then
+                return o
+            end
+        end
+    end
+    return nil
+end
 
 --The addChild method check the type of the obj and store it 
 --in a specific list. Images needs to be handled in a different way
@@ -86,9 +117,7 @@ function DisplayObjContainer:addChild(obj)
 
     local objList = obj:is_a(Quad) and self._quads or self._displayObjs
 --[[
-    assert(obj:is_a(DisplayObj), debug.getinfo(1,"n").name .. 
-        " obj is not a DisplayObj")
-        
+should check for consistency: cannot add self or an ancestor because 
     assert(obj ~= self, debug.getinfo(1,"n").name .. 
         "an obj can't be add to itself")
     
@@ -118,9 +147,74 @@ function DisplayObjContainer:removeChild(obj)
         obj:_setParent(nil)
         self._numChildren = self._numChildren - 1
     end
-
 end
 
+--[[
+The following methods can be used only with non quads objects, due to
+custom handling of quads/meshes
+--]]
+
+--can be used to sort objects in insertion. doesn't works
+--with quads and derived classes
+function DisplayObjContainer:addChildAt(obj,index)
+    assert(not obj:is_a(Quad))
+    
+    if(obj.parent) then
+        obj.parent:removeChild(obj)
+    end
+    
+    table.insert(self._displayObjs,index,obj) 
+    obj:_setParent(self)
+    self._numChildren = self._numChildren + 1
+end
+
+--doesn't work with quads and derived classes
+function DisplayObjContainer:removeChildAt(index)
+    local obj = self._displayObjs[index]
+    if obj then
+        table.remove(self._displayObjs,index)
+        obj:_setParent(nil)
+        self._numChildren = self._numChildren - 1
+    end
+end
+
+--returns the index of a given displayObj, if contained, or 0 if not. 
+--NB: the method doesn't work with quads and derived classes
+function DisplayObjContainer:getChildIndex(obj)
+    return table.find(self._displayObjs,obj)
+end
+
+--returns the displayObj at the given index. it doesn't work for quads
+--and derived classes
+function DisplayObjContainer:getChildAt(index)
+    return self._displayObjs[index]
+end
+
+--Swap two given children in the displayList. doesn't work with
+--quads and derived classes
+function DisplayObjContainer:swapChildren(obj1,obj2)
+    local index1 = table.find(self._displayObjs,obj1)
+    local index2 = table.find(self._displayObjs,obj2)
+    
+    assert(index1>0 and index2>0)
+    
+    self._displayObjs[index1] = obj2
+    self._displayObjs[index2] = obj1
+end
+
+--Swap the two children at the given positions in the displayList 
+--doesn't work with quads and derived classes
+function DisplayObjContainer:swapChildrenAt(index1,index2)
+    local obj1 = self._displayObjs[index1]
+    local obj2 = self._displayObjs[index2]
+    
+    assert(obj1 and obj2)
+    
+    self._displayObjs[index1] = obj2
+    self._displayObjs[index2] = obj1
+end
+
+-- private methods
 function DisplayObjContainer:_getMeshData(quad)
 --[[
     assert(quad:is_a(Quad), debug.getinfo(1,"n").name .. 
@@ -146,11 +240,13 @@ function DisplayObjContainer:_getMeshData(quad)
         end
     end
     local idx = self._meshes[textData]:addRect(0,0,0,0)
+    --[[
     -- temp fix for 500th quad problem.... remove after next release
     -- of codea!
     if (idx % 500) == 0 then
         idx = self._meshes[textData]:addRect(0,0,0,0)
     end
+    --]]
     return MeshData(self._meshes[textData], idx)
 end
 
