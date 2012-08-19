@@ -139,45 +139,41 @@ function Quad:_updateGeometry()
                 0,0,0,0)
             return
         end
+
+        local sx = self._members.scaleX
+        local sy = self._members.scaleY
+        local w = self._rectMatrix[3] * sx
+        local h = self._rectMatrix[5] * sy
         
         if self._pivotMode ~= PivotMode.CENTER and self._flags.bRotate 
-            --or true
+--            or true
             then
-                
-            local m = self:getTransformationMatrix(self.parent)
-            local tm =  m:transpose() * self._rectMatrix
             
-            local idx = (self.meshdata.idx - 1) * 6
-            local mesh = self.meshdata.mesh
-            mesh:vertex(idx + 1, tm[1],tm[5])
-            mesh:vertex(idx + 2, tm[2],tm[6])
-            mesh:vertex(idx + 3, tm[3],tm[7])
-            mesh:vertex(idx + 4, tm[1],tm[5])
-            mesh:vertex(idx + 5, tm[3],tm[7])
-            mesh:vertex(idx + 6, tm[4],tm[8])
-            
-        else
-            local sx = self._members.scaleX
-            local sy = self._members.scaleY
-            local w = self._rectMatrix[3] * sx
-            local h = self._rectMatrix[5] * sy
-            
-            if self._pivotMode == PivotMode.CENTER then
-                self.meshdata.mesh:setRect(self.meshdata.idx,
-                    self._members.x,
-                    self._members.y,
-                    w,h,
+            local c = vec2(-sx * self._members.pivotX + w/2,
+                -sy * self._members.pivotY + h/2)
+            c = c:rotate(self._members.r)
+            self.meshdata.mesh:setRect(self.meshdata.idx,
+                    c.x+self._members.x,
+                    c.y+self._members.y,
+                    w,
+                    h,
                     self._members.r)
-            else
-                --not centered and not rotate
-                local x = self._members.x - self._members.pivotX * 
-                    sx + w/2
-                local y = self._members.y - self._members.pivotY *
-                    sy + h/2
                     
-                self.meshdata.mesh:setRect(self.meshdata.idx,
-                    x,y,w,h)
-            end
+        elseif self._pivotMode == PivotMode.CENTER then
+            self.meshdata.mesh:setRect(self.meshdata.idx,
+                self._members.x,
+                self._members.y,
+                w,h,
+                self._members.r)
+        else
+            --not centered and not rotate
+            local x = self._members.x - self._members.pivotX * 
+                sx + w/2
+            local y = self._members.y - self._members.pivotY *
+                sy + h/2
+                    
+            self.meshdata.mesh:setRect(self.meshdata.idx,
+                x,y,w,h)
         end
     end
 end
