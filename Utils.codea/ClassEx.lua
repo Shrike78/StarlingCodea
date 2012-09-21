@@ -97,7 +97,6 @@ function class(...)
     end
     
     c.implements = function(self, interface)
-        print("ciao")
             -- Check we have all the target's callables
         for k, v in pairs(interface) do
             if not reserved[k] and type(v) == 'function' and 
